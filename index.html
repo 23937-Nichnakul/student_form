@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบบันทึกข้อมูลนักเรียน</title>
-    <!-- นำเข้าฟอนต์ Prompt ที่มีความนุ่มนวลอ่านง่าย -->
+    <title>ระบบบันทึกข้อมูลนักเรียน - Ultra Smooth</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- General Reset & Base Style --- */
+        /* --- General & Base Setup --- */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -19,7 +18,6 @@
         }
 
         body {
-            /* พื้นหลังสีฟ้าอ่อนพาสเทล นุ่มนวล สบายตา */
             background: linear-gradient(135deg, #f0f7ff 0%, #e0effe 100%);
             min-height: 100vh;
             display: flex;
@@ -32,12 +30,11 @@
             background-color: #ffffff;
             width: 100%;
             max-width: 850px;
-            border-radius: 24px; /* ความโค้งมนระดับพรีเมียม */
-            box-shadow: 0 12px 40px rgba(14, 116, 144, 0.08); /* เงาละมุนไม่ทึบเกินไป */
+            border-radius: 24px;
+            box-shadow: 0 12px 40px rgba(14, 116, 144, 0.06);
             padding: 45px;
         }
 
-        /* --- Header Form --- */
         .form-header {
             text-align: center;
             margin-bottom: 40px;
@@ -55,7 +52,6 @@
             font-size: 15px;
         }
 
-        /* --- Form Sections --- */
         fieldset {
             border: none;
             margin-bottom: 35px;
@@ -66,15 +62,11 @@
             font-weight: 600;
             color: #0284c7;
             margin-bottom: 22px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
             width: 100%;
             border-bottom: 2px solid #f0f7ff;
             padding-bottom: 8px;
         }
 
-        /* จัด Layout Grid */
         .form-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -85,11 +77,11 @@
             grid-column: span 2;
         }
 
-        /* --- Form Controls & Inputs --- */
         .form-group {
             display: flex;
             flex-direction: column;
             gap: 8px;
+            position: relative;
         }
 
         label {
@@ -98,35 +90,32 @@
             font-weight: 500;
         }
 
+        /* --- Standard Inputs --- */
         input[type="text"],
         input[type="number"],
         input[type="email"],
         input[type="tel"],
         input[type="date"],
         input[type="url"],
-        select,
         textarea {
             width: 100%;
             padding: 12px 16px;
             border: 1.5px solid #e2e8f0;
-            border-radius: 12px; /* เพิ่มความโค้งมนให้กล่องกรอก */
+            border-radius: 12px;
             font-size: 14px;
             color: #1e293b;
             background-color: #f8fafc;
             outline: none;
-            transition: all 0.2s ease-in-out;
+            transition: all 0.25s ease-in-out;
         }
 
-        /* เอฟเฟกต์ตอนโฟกัส นุ่มนวล ไม่แข็ง */
-        input:focus,
-        select:focus,
-        textarea:focus {
+        input:focus, textarea:focus {
             border-color: #38bdf8;
             background-color: #ffffff;
-            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.12);
         }
 
-        /* --- ปรับแต่งตัวเลือกคำนำหน้า (นุ่มนวลและกดง่ายขึ้น) --- */
+        /* --- ปุ่มกดเลือกคำนำหน้า (นุ่มนวลพิเศษ) --- */
         .prefix-group {
             display: flex;
             gap: 8px;
@@ -155,24 +144,113 @@
             font-size: 14px;
             color: #475569;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
             font-weight: 500;
         }
 
-        /* เมื่อตัวเลือกคำนำหน้าถูกคลิกเลือก */
         .prefix-item input[type="radio"]:checked + .prefix-label {
             background-color: #e0f2fe;
             border-color: #0284c7;
             color: #0369a1;
             font-weight: 600;
-            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.1);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.08);
         }
 
-        .prefix-item input[type="radio"]:focus + .prefix-label {
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+        /* --- ใหม่! กล่องตัวเลือก CUSTOM DROPDOWN อัลตร้าสมูท --- */
+        .custom-select-wrapper {
+            position: relative;
+            user-select: none;
         }
 
-        /* --- ปรับแต่ง Radio & Checkbox (โค้งมน สวยงาม) --- */
+        /* ส่วนหัวข้อแสดงผล */
+        .custom-select-trigger {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            color: #1e293b;
+            background-color: #f8fafc;
+            cursor: pointer;
+            transition: all 0.25s ease-in-out;
+        }
+
+        /* สัญลักษณ์ลูกศร */
+        .custom-select-trigger::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-right: 2px solid #64748b;
+            border-bottom: 2px solid #64748b;
+            transform: rotate(45deg);
+            margin-top: -4px;
+            transition: all 0.25s ease-in-out;
+        }
+
+        /* เอฟเฟกต์ตอนเปิดใช้งาน */
+        .custom-select-wrapper.open .custom-select-trigger {
+            border-color: #38bdf8;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.12);
+        }
+
+        .custom-select-wrapper.open .custom-select-trigger::after {
+            transform: rotate(-135deg);
+            margin-top: 2px;
+            border-color: #0284c7;
+        }
+
+        /* แผงตัวเลือกเลื่อนลงมา (Ultra Smooth Animation) */
+        .custom-options {
+            position: absolute;
+            display: block;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+            z-index: 100;
+            
+            /* ทริคทำแอนิเมชันสไลด์แบบนุ่มนวล */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.25s;
+            overflow: hidden;
+        }
+
+        /* เมื่อสั่งเปิดคลาส open ให้เล่นแอนิเมชัน */
+        .custom-select-wrapper.open .custom-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* ตัวเลือกย่อยด้านใน */
+        .custom-option {
+            padding: 12px 16px;
+            font-size: 14px;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .custom-option:hover {
+            background-color: #e0f2fe;
+            color: #0369a1;
+            padding-left: 20px; /* ขยับเล็กน้อยให้ดูมีมิติแบบแอปสมัยใหม่ */
+        }
+
+        /* ส่วนซ่อนค่าจริงสำหรับส่ง Form */
+        .hidden-select {
+            display: none;
+        }
+
+        /* --- Radio & Checkbox (ดีไซน์มนโค้งพาสเทล) --- */
         .radio-group, .checkbox-group {
             display: flex;
             flex-wrap: wrap;
@@ -195,24 +273,14 @@
 
         .radio-item:hover, .checkbox-item:hover {
             background-color: #f1f5f9;
-            border-color: #cbd5e1;
-        }
-
-        /* เมื่อมีการเลือก Radio หรือ Checkbox */
-        .radio-item has(:checked), .checkbox-item has(:checked) {
-            background-color: #e0f2fe;
-            border-color: #0284c7;
-            color: #0369a1;
         }
 
         .radio-item input, .checkbox-item input {
             width: 16px;
             height: 16px;
-            accent-color: #0284c7; /* สีติ๊กถูกนุ่มนวล */
-            cursor: pointer;
+            accent-color: #0284c7;
         }
 
-        /* ปรับช่องเลือกสี */
         input[type="color"] {
             -webkit-appearance: none;
             border: 1.5px solid #e2e8f0;
@@ -228,7 +296,6 @@
             border-radius: 8px;
         }
 
-        /* ช่องอัปโหลดไฟล์แบบโค้งมน */
         input[type="file"] {
             padding: 8px;
             border: 1.5px dashed #bae6fd;
@@ -237,7 +304,6 @@
             cursor: pointer;
         }
 
-        /* --- Agreement Section --- */
         .agreement {
             margin: 30px 0;
             padding: 16px;
@@ -252,7 +318,7 @@
             font-weight: 500;
         }
 
-        /* --- Action Buttons --- */
+        /* --- Buttons --- */
         .btn-group {
             display: flex;
             gap: 16px;
@@ -273,13 +339,13 @@
         .btn-submit {
             background-color: #0284c7;
             color: #ffffff;
-            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.1);
         }
 
         .btn-submit:hover {
             background-color: #0369a1;
             transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(2, 132, 199, 0.25);
+            box-shadow: 0 6px 16px rgba(2, 132, 199, 0.2);
         }
 
         .btn-reset {
@@ -293,43 +359,22 @@
             color: #334155;
         }
 
-        /* --- Responsive Styles --- */
         @media (max-width: 768px) {
-            body {
-                padding: 20px 10px;
-            }
-
-            .container {
-                padding: 30px 20px;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-
-            .full-width {
-                grid-column: span 1;
-            }
-
-            .prefix-group {
-                flex-wrap: wrap;
-            }
-
-            .btn-group {
-                flex-direction: column-reverse;
-                gap: 12px;
-            }
+            body { padding: 20px 10px; }
+            .container { padding: 30px 20px; }
+            .form-grid { grid-template-columns: 1fr; gap: 16px; }
+            .full-width { grid-column: span 1; }
+            .prefix-group { flex-wrap: wrap; }
+            .btn-group { flex-direction: column-reverse; gap: 12px; }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- หัวข้อฟอร์ม -->
         <div class="form-header">
             <h2>ลงทะเบียนข้อมูลนักเรียน</h2>
-            <p>กรุณากรอกข้อมูลให้ครบถ้วนเพื่อความถูกต้องของระบบฐานข้อมูล</p>
+            <p>ระบบกรอกข้อมูลแบบใหม่ ดีไซน์นุ่มนวลและใช้งานง่ายยิ่งขึ้น</p>
         </div>
 
         <form action="#" method="POST" enctype="multipart/form-data">
@@ -338,7 +383,6 @@
             <fieldset>
                 <legend>✨ 1. ข้อมูลส่วนตัว</legend>
                 <div class="form-grid">
-                    <!-- คำนำหน้าแบบปุ่มกดนุ่มนวลตามที่ขอครับ -->
                     <div class="form-group full-width">
                         <label>คำนำหน้า</label>
                         <div class="prefix-group">
@@ -406,52 +450,80 @@
             <fieldset>
                 <legend>🧬 3. ข้อมูลส่วนบุคคล</legend>
                 <div class="form-grid">
-                    <!-- ตัวเลือกเพศแบบปุ่มมนโค้ง -->
                     <div class="form-group">
                         <label>เพศ</label>
                         <div class="radio-group">
-                            <label class="radio-item">
-                                <input type="radio" name="gender" value="ชาย" required> ชาย
-                            </label>
-                            <label class="radio-item">
-                                <input type="radio" name="gender" value="หญิง"> หญิง
-                            </label>
-                            <label class="radio-item">
-                                <input type="radio" name="gender" value="อื่นๆ"> อื่นๆ
-                            </label>
+                            <label class="radio-item"><input type="radio" name="gender" value="ชาย" required> ชาย</label>
+                            <label class="radio-item"><input type="radio" name="gender" value="หญิง"> หญิง</label>
+                            <label class="radio-item"><input type="radio" name="gender" value="อื่นๆ"> อื่นๆ</label>
                         </div>
                     </div>
+
+                    <!-- Custom Dropdown: ศาสนา -->
                     <div class="form-group">
-                        <label for="religion">ศาสนา</label>
-                        <select id="religion" name="religion" required>
-                            <option value="" disabled selected>-- เลือกศาสนา --</option>
-                            <option value="พุทธ">พุทธ</option>
-                            <option value="คริสต์">คริสต์</option>
-                            <option value="อิสลาม">อิสลาม</option>
-                            <option value="ฮินดู">ฮินดู</option>
-                            <option value="อื่นๆ">อื่นๆ</option>
-                        </select>
+                        <label>ศาสนา</label>
+                        <div class="custom-select-wrapper">
+                            <select name="religion" class="hidden-select" required>
+                                <option value="" disabled selected>-- เลือกศาสนา --</option>
+                                <option value="พุทธ">พุทธ</option>
+                                <option value="คริสต์">คริสต์</option>
+                                <option value="อิสลาม">อิสลาม</option>
+                                <option value="ฮินดู">ฮินดู</option>
+                                <option value="อื่นๆ">อื่นๆ</option>
+                            </select>
+                            <div class="custom-select-trigger">-- เลือกศาสนา --</div>
+                            <div class="custom-options">
+                                <div class="custom-option" data-value="พุทธ">พุทธ</div>
+                                <div class="custom-option" data-value="คริสต์">คริสต์</div>
+                                <div class="custom-option" data-value="อิสลาม">อิสลาม</div>
+                                <div class="custom-option" data-value="ฮินดู">ฮินดู</div>
+                                <div class="custom-option" data-value="อื่นๆ">อื่นๆ</div>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- Custom Dropdown: จังหวัดภูมิลำเนา -->
                     <div class="form-group">
-                        <label for="province">จังหวัดภูมิลำเนา</label>
-                        <select id="province" name="province" required>
-                            <option value="" disabled selected>-- เลือกจังหวัด --</option>
-                            <option value="กรุงเทพมหานคร">กรุงเทพมหานคร</option>
-                            <option value="เชียงใหม่">เชียงใหม่</option>
-                            <option value="ชลบุรี">ชลบุรี</option>
-                            <option value="นครราชสีมา">นครราชสีมา</option>
-                            <option value="ภูเก็ต">ภูเก็ต</option>
-                        </select>
+                        <label>จังหวัดภูมิลำเนา</label>
+                        <div class="custom-select-wrapper">
+                            <select name="province" class="hidden-select" required>
+                                <option value="" disabled selected>-- เลือกจังหวัด --</option>
+                                <option value="กรุงเทพมหานคร">กรุงเทพมหานคร</option>
+                                <option value="เชียงใหม่">เชียงใหม่</option>
+                                <option value="ชลบุรี">ชลบุรี</option>
+                                <option value="นครราชสีมา">นครราชสีมา</option>
+                                <option value="ภูเก็ต">ภูเก็ต</option>
+                            </select>
+                            <div class="custom-select-trigger">-- เลือกจังหวัด --</div>
+                            <div class="custom-options">
+                                <div class="custom-option" data-value="กรุงเทพมหานคร">กรุงเทพมหานคร</div>
+                                <div class="custom-option" data-value="เชียงใหม่">เชียงใหม่</div>
+                                <div class="custom-option" data-value="ชลบุรี">ชลบุรี</div>
+                                <div class="custom-option" data-value="นครราชสีมา">นครราชสีมา</div>
+                                <div class="custom-option" data-value="ภูเก็ต">ภูเก็ต</div>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- Custom Dropdown: กรุ๊ปเลือด -->
                     <div class="form-group">
-                        <label for="blood-type">กรุ๊ปเลือด</label>
-                        <select id="blood-type" name="blood_type" required>
-                            <option value="" disabled selected>-- เลือกกรุ๊ปเลือด --</option>
-                            <option value="A">A</option>
-                            <option value="B">B</option>
-                            <option value="O">O</option>
-                            <option value="AB">AB</option>
-                        </select>
+                        <label>กรุ๊ปเลือด</label>
+                        <div class="custom-select-wrapper">
+                            <select name="blood_type" class="hidden-select" required>
+                                <option value="" disabled selected>-- เลือกกรุ๊ปเลือด --</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="O">O</option>
+                                <option value="AB">AB</option>
+                            </select>
+                            <div class="custom-select-trigger">-- เลือกกรุ๊ปเลือด --</div>
+                            <div class="custom-options">
+                                <div class="custom-option" data-value="A">A</div>
+                                <div class="custom-option" data-value="B">B</div>
+                                <div class="custom-option" data-value="O">O</div>
+                                <div class="custom-option" data-value="AB">AB</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </fieldset>
@@ -463,21 +535,11 @@
                     <div class="form-group full-width">
                         <label>งานอดิเรก (เลือกได้มากกว่า 1 ข้อ)</label>
                         <div class="checkbox-group">
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="hobbies[]" value="อ่านหนังสือ"> อ่านหนังสือ
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="hobbies[]" value="เล่นกีฬา"> เล่นกีฬา
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="hobbies[]" value="เล่นเกม"> เล่นเกม
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="hobbies[]" value="วาดภาพ"> วาดภาพ
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="hobbies[]" value="ดนตรี"> ฟังเพลง/ดนตรี
-                            </label>
+                            <label class="checkbox-item"><input type="checkbox" name="hobbies[]" value="อ่านหนังสือ"> อ่านหนังสือ</label>
+                            <label class="checkbox-item"><input type="checkbox" name="hobbies[]" value="เล่นกีฬา"> เล่นกีฬา</label>
+                            <label class="checkbox-item"><input type="checkbox" name="hobbies[]" value="เล่นเกม"> เล่นเกม</label>
+                            <label class="checkbox-item"><input type="checkbox" name="hobbies[]" value="วาดภาพ"> วาดภาพ</label>
+                            <label class="checkbox-item"><input type="checkbox" name="hobbies[]" value="ดนตรี"> ฟังเพลง/ดนตรี</label>
                         </div>
                     </div>
                     <div class="form-group">
@@ -495,32 +557,57 @@
             <fieldset>
                 <legend>🎓 5. ข้อมูลการศึกษา</legend>
                 <div class="form-grid">
+                    <!-- Custom Dropdown: ระดับชั้น -->
                     <div class="form-group">
-                        <label for="education-level">ระดับชั้น</label>
-                        <select id="education-level" name="education_level" required>
-                            <option value="" disabled selected>-- เลือกระดับชั้น --</option>
-                            <option value="มัธยมศึกษาปีที่ 1">มัธยมศึกษาปีที่ 1</option>
-                            <option value="มัธยมศึกษาปีที่ 2">มัธยมศึกษาปีที่ 2</option>
-                            <option value="มัธยมศึกษาปีที่ 3">มัธยมศึกษาปีที่ 3</option>
-                            <option value="มัธยมศึกษาปีที่ 4">มัธยมศึกษาปีที่ 4</option>
-                            <option value="มัธยมศึกษาปีที่ 5">มัธยมศึกษาปีที่ 5</option>
-                            <option value="มัธยมศึกษาปีที่ 6">มัธยมศึกษาปีที่ 6</option>
-                        </select>
+                        <label>ระดับชั้น</label>
+                        <div class="custom-select-wrapper">
+                            <select name="education_level" class="hidden-select" required>
+                                <option value="" disabled selected>-- เลือกระดับชั้น --</option>
+                                <option value="มัธยมศึกษาปีที่ 1">มัธยมศึกษาปีที่ 1</option>
+                                <option value="มัธยมศึกษาปีที่ 2">มัธยมศึกษาปีที่ 2</option>
+                                <option value="มัธยมศึกษาปีที่ 3">มัธยมศึกษาปีที่ 3</option>
+                                <option value="มัธยมศึกษาปีที่ 4">มัธยมศึกษาปีที่ 4</option>
+                                <option value="มัธยมศึกษาปีที่ 5">มัธยมศึกษาปีที่ 5</option>
+                                <option value="มัธยมศึกษาปีที่ 6">มัธยมศึกษาปีที่ 6</option>
+                            </select>
+                            <div class="custom-select-trigger">-- เลือกระดับชั้น --</div>
+                            <div class="custom-options">
+                                <div class="custom-option" data-value="มัธยมศึกษาปีที่ 1">มัธยมศึกษาปีที่ 1</div>
+                                <div class="custom-option" data-value="มัธยมศึกษาปีที่ 2">มัธยมศึกษาปีที่ 2</div>
+                                <div class="custom-option" data-value="มัธยมศึกษาปีที่ 3">มัธยมศึกษาปีที่ 3</div>
+                                <div class="custom-option" data-value="มัธยมศึกษาปีที่ 4">มัธยมศึกษาปีที่ 4</div>
+                                <div class="custom-option" data-value="มัธยมศึกษาปีที่ 5">มัธยมศึกษาปีที่ 5</div>
+                                <div class="custom-option" data-value="มัธยมศึกษาปีที่ 6">มัธยมศึกษาปีที่ 6</div>
+                            </div>
+                        </div>
                     </div>
+                    
                     <div class="form-group">
                         <label for="classroom">ห้องเรียน</label>
                         <input type="number" id="classroom" name="classroom" min="1" max="15" placeholder="เช่น 1" required>
                     </div>
+
+                    <!-- Custom Dropdown: แผนการเรียน -->
                     <div class="form-group">
-                        <label for="study-plan">แผนการเรียน</label>
-                        <select id="study-plan" name="study_plan" required>
-                            <option value="" disabled selected>-- เลือกแผนการเรียน --</option>
-                            <option value="วิทยาศาสตร์-คณิตศาสตร์">วิทยาศาสตร์-คณิตศาสตร์</option>
-                            <option value="ศิลป์-คำนวณ">ศิลป์-คำนวณ</option>
-                            <option value="ศิลป์-ภาษา">ศิลป์-ภาษา</option>
-                            <option value="ทั่วไป/อื่นๆ">ทั่วไป/อื่นๆ</option>
-                        </select>
+                        <label>แผนการเรียน</label>
+                        <div class="custom-select-wrapper">
+                            <select name="study_plan" class="hidden-select" required>
+                                <option value="" disabled selected>-- เลือกแผนการเรียน --</option>
+                                <option value="วิทยาศาสตร์-คณิตศาสตร์">วิทยาศาสตร์-คณิตศาสตร์</option>
+                                <option value="ศิลป์-คำนวณ">ศิลป์-คำนวณ</option>
+                                <option value="ศิลป์-ภาษา">ศิลป์-ภาษา</option>
+                                <option value="ทั่วไป/อื่นๆ">ทั่วไป/อื่นๆ</option>
+                            </select>
+                            <div class="custom-select-trigger">-- เลือกแผนการเรียน --</div>
+                            <div class="custom-options">
+                                <div class="custom-option" data-value="วิทยาศาสตร์-คณิตศาสตร์">วิทยาศาสตร์-คณิตศาสตร์</div>
+                                <div class="custom-option" data-value="ศิลป์-คำนวณ">ศิลป์-คำนวณ</div>
+                                <div class="custom-option" data-value="ศิลป์-ภาษา">ศิลป์-ภาษา</div>
+                                <div class="custom-option" data-value="ทั่วไป/อื่นๆ">ทั่วไป/อื่นๆ</div>
+                            </div>
+                        </div>
                     </div>
+
                     <div class="form-group">
                         <label for="gpa">เกรดเฉลี่ยสะสม (GPAX)</label>
                         <input type="number" id="gpa" name="gpa" step="0.01" min="0.00" max="4.00" placeholder="เช่น 3.50" required>
@@ -548,7 +635,7 @@
                 <legend>💬 7. ความคิดเห็นเพิ่มเติม</legend>
                 <div class="form-group">
                     <label for="comments">แสดงความคิดเห็น / ข้อมูลเพิ่มเติม</label>
-                    <textarea id="comments" name="comments" rows="4" placeholder="กรอกข้อความที่ต้องการแจ้งรายละเอียดเพิ่มเติม..."></textarea>
+                    <textarea id="comments" name="comments" rows="4" placeholder="กรอกรายละเอียดเพิ่มเติม..."></textarea>
                 </div>
             </fieldset>
 
@@ -556,18 +643,60 @@
             <div class="agreement">
                 <label class="checkbox-item">
                     <input type="checkbox" name="terms_agreement" required>
-                    <span>ฉันยอมรับว่าข้อมูลทั้งหมดถูกต้องตรงตามความเป็นจริงและยอมรับเงื่อนไขการใช้งาน</span>
+                    <span>ฉันยอมรับว่าข้อมูลทั้งหมดถูกต้องตรงตามความเป็นจริง</span>
                 </label>
             </div>
 
-            <!-- ปุ่มดำเนินการ -->
             <div class="btn-group">
                 <button type="reset" class="btn btn-reset">ล้างข้อมูล</button>
                 <button type="submit" class="btn btn-submit">ส่งข้อมูลนักเรียน</button>
             </div>
-
         </form>
     </div>
 
+    <!-- --- JavaScript สำหรับขับเคลื่อน Custom Dropdown ให้สมูทที่สุด --- -->
+    <script>
+        document.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
+            const trigger = wrapper.querySelector('.custom-select-trigger');
+            const optionsContainer = wrapper.querySelector('.custom-options');
+            const options = wrapper.querySelectorAll('.custom-option');
+            const hiddenSelect = wrapper.querySelector('.hidden-select');
+
+            // 1. คลิกเปิด-ปิด Dropdown แบบสมูท
+            trigger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                // ปิดอันอื่นก่อนเปิดอันใหม่
+                document.querySelectorAll('.custom-select-wrapper').forEach(otherWrapper => {
+                    if (otherWrapper !== wrapper) otherWrapper.classList.remove('open');
+                });
+                wrapper.classList.toggle('open');
+            });
+
+            // 2. คลิกเลือกตัวเลือกย่อย
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    const value = this.getAttribute('data-value');
+                    const text = this.textContent;
+
+                    // เปลี่ยนข้อความที่แสดงตรงหัวข้อ
+                    trigger.textContent = text;
+                    trigger.style.color = '#1e293b'; // เปลี่ยนเป็นสีเข้มเมื่อเลือกแล้ว
+
+                    // อัปเดตค่าไปยัง <select> จริงที่ซ่อนไว้เพื่อให้ Form ส่งข้อมูลได้ถูกต้อง
+                    hiddenSelect.value = value;
+                    
+                    // ปิดเมนู
+                    wrapper.classList.remove('open');
+                });
+            });
+        });
+
+        // 3. คลิกพื้นที่อื่นข้างนอกฟอร์ม ให้ปิด Dropdown อัตโนมัติ
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
+                wrapper.classList.remove('open');
+            });
+        });
+    </script>
 </body>
 </html>
