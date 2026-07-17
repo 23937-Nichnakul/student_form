@@ -114,7 +114,7 @@
             box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
         }
 
-        /* --- Custom Date Picker (แก้ไขช่องปฏิทินให้สมูทและโค้งมน) --- */
+        /* --- Custom Date Picker (แก้ไขเพิ่มตัวเลือกเดือน/ปีให้คลิกเปลี่ยนได้ทันที) --- */
         .date-picker-container {
             position: relative;
         }
@@ -154,7 +154,7 @@
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             padding: 16px;
-            width: 300px;
+            width: 320px;
             z-index: 110;
             opacity: 0;
             visibility: hidden;
@@ -174,13 +174,34 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
+            gap: 6px;
         }
 
-        .calendar-header span {
-            font-weight: 600;
+        /* ปรับสไตล์ Dropdown เลือกเดือน/ปีในปฏิทิน */
+        .calendar-selects {
+            display: flex;
+            gap: 6px;
+            flex-grow: 1;
+            justify-content: center;
+        }
+
+        .calendar-dropdown select {
+            padding: 6px 10px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
             color: #0369a1;
-            font-size: 15px;
+            background-color: #f8fafc;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .calendar-dropdown select:focus {
+            border-color: #38bdf8;
+            background-color: #ffffff;
         }
 
         .calendar-btn {
@@ -188,9 +209,10 @@
             border: none;
             color: #64748b;
             cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 8px;
+            padding: 6px 10px;
+            border-radius: 10px;
             transition: background-color 0.2s;
+            font-size: 12px;
         }
 
         .calendar-btn:hover {
@@ -214,7 +236,7 @@
         .day {
             font-size: 13px;
             color: #334155;
-            padding: 6px 0;
+            padding: 7px 0;
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.2s;
@@ -236,7 +258,7 @@
             background: none !important;
         }
 
-        /* --- Custom Dropdown (คำนำหน้า) --- */
+        /* --- Custom Dropdown --- */
         .custom-select-wrapper {
             position: relative;
             user-select: none;
@@ -363,7 +385,7 @@
             color: #0369a1;
         }
 
-        /* --- Custom Color Palette Picker (แก้ไขกล่องเลือกสีไม่ให้เหลี่ยมเด้ง) --- */
+        /* --- Custom Color Palette Picker --- */
         .color-palette-container {
             display: flex;
             align-items: center;
@@ -437,7 +459,7 @@
             font-weight: 500;
         }
 
-        /* --- Custom Agreement Checkbox (แก้ไขช่องติ๊กยอมรับตอนท้าย) --- */
+        /* --- Custom Agreement Checkbox --- */
         .smooth-agreement-box {
             margin: 35px 0;
             user-select: none;
@@ -460,7 +482,6 @@
             border-color: #bae6fd;
         }
 
-        /* สร้างช่องติ๊กใหม่เองให้มนกลมกลืน */
         .custom-checkbox-visual {
             width: 22px;
             height: 22px;
@@ -484,12 +505,10 @@
             transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* ซ่อนกล่องจริงเบื้องหลัง */
         .smooth-checkbox-label input {
             display: none;
         }
 
-        /* แอนิเมชันเปิดสวิตช์เมื่อกดเช็กยอมรับ */
         .smooth-checkbox-label input:checked + .custom-checkbox-visual {
             background-color: #0284c7;
             border-color: #0284c7;
@@ -604,7 +623,7 @@
                         <input type="text" id="student-id" name="student_id" pattern="[0-9]{5}" placeholder="รหัส 5 หลัก เช่น 12345" required>
                     </div>
                     
-                    <!-- เปลี่ยนช่องวันเกิดเป็น Custom Date Picker เพื่อแอนิเมชันปฏิทินที่สมูท -->
+                    <!-- ช่องวันเกิดที่มี Dropdown เลือกเดือน/ปีเกิดได้รวดเร็วทันใจ -->
                     <div class="form-group">
                         <label>วันเดือนปีเกิด</label>
                         <div class="date-picker-container" id="birthdayPicker">
@@ -614,11 +633,14 @@
                             <div class="calendar-dropdown">
                                 <div class="calendar-header">
                                     <button type="button" class="calendar-btn" id="prevMonth">◀</button>
-                                    <span id="calendarTitle">กรกฎาคม 2569</span>
+                                    <div class="calendar-selects">
+                                        <select id="selectMonth"></select>
+                                        <select id="selectYear"></select>
+                                    </div>
                                     <button type="button" class="calendar-btn" id="nextMonth">▶</button>
                                 </div>
                                 <div class="calendar-grid" id="calendarGrid">
-                                    <!-- สร้างวันผ่าน JS -->
+                                    <!-- สร้างปฏิทินใน JS -->
                                 </div>
                             </div>
                         </div>
@@ -679,7 +701,7 @@
                                 <div class="custom-option" data-value="พุทธ">พุทธ</div>
                                 <div class="custom-option" data-value="คริสต์">คริสต์</div>
                                 <div class="custom-option" data-value="อิสลาม">อิสลาม</div>
-                                <div class="custom-option" data-value="ฮินดู">ฮินดู</div>
+                                <div class="custom-option" data-value="ฮินดู">ฮินดู</option>
                                 <div class="custom-option" data-value="อื่นๆ">อื่นๆ</div>
                             </div>
                         </div>
@@ -701,7 +723,6 @@
                         </div>
                     </div>
                     
-                    <!-- เปลี่ยนช่องเลือกสีดั้งเดิม เป็นแบบวงกลมพาสเทลคลิกเลือกแบบลื่นไหลและมนโค้ง -->
                     <div class="form-group">
                         <label>สีที่ชอบ</label>
                         <div class="color-palette-container">
@@ -744,7 +765,6 @@
                 </div>
             </fieldset>
 
-            <!-- แก้ไขส่วนติ๊กยอมรับตอนท้ายสุดให้มีดีไซน์สมูทโค้งมนกลมกลืน -->
             <div class="smooth-agreement-box">
                 <label class="smooth-checkbox-label">
                     <input type="checkbox" name="terms_agreement" required>
@@ -762,7 +782,7 @@
 
     <!-- --- JS จัดการพฤติกรรม Custom UI เพื่อความสมูทสูงสุด --- -->
     <script>
-        // 1. จัดการ Custom Dropdown คำนำหน้า
+        // 1. จัดการ Custom Dropdown คำนำหน้า/ศาสนา
         document.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
             const trigger = wrapper.querySelector('.custom-select-trigger');
             const options = wrapper.querySelectorAll('.custom-option');
@@ -793,28 +813,63 @@
             });
         });
 
-        // 3. จัดการ Custom Date Picker (ปฏิทินแบบนุ่มนวล)
+        // 3. จัดการ Custom Date Picker (มีระบบเลือกข้ามปีแบบ Fast-Select)
         const datePicker = document.getElementById('birthdayPicker');
         const dateTrigger = document.getElementById('dateTrigger');
         const actualBirthdate = document.getElementById('actualBirthdate');
         const calendarGrid = document.getElementById('calendarGrid');
-        const calendarTitle = document.getElementById('calendarTitle');
+        const selectMonth = document.getElementById('selectMonth');
+        const selectYear = document.getElementById('selectYear');
         
         let currentYear = 2026;
-        let currentMonth = 6; // กรกฎาคม (0-indexed)
+        let currentMonth = 6; // ค่าตั้งต้น: กรกฎาคม
         const monthsTH = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
 
+        // สร้างตัวเลือกเดือนลงใน Dropdown
+        monthsTH.forEach((month, idx) => {
+            const opt = document.createElement('option');
+            opt.value = idx;
+            opt.textContent = month;
+            selectMonth.appendChild(opt);
+        });
+
+        // สร้างตัวเลือกปีลงใน Dropdown (ย้อนหลัง 60 ปี - อนาคต 5 ปี เป็นปี พ.ศ.)
+        for (let y = 2031; y >= 1966; y--) {
+            const opt = document.createElement('option');
+            opt.value = y;
+            opt.textContent = `พ.ศ. ${y + 543}`;
+            selectYear.appendChild(opt);
+        }
+
+        // เมื่อคลิกเปิดหน้าต่างปฏิทิน
         dateTrigger.addEventListener('click', function(e) {
             e.stopPropagation();
             closeAllPopups();
             datePicker.classList.toggle('open');
+            syncSelectValues();
+            renderCalendar();
+        });
+
+        function syncSelectValues() {
+            selectMonth.value = currentMonth;
+            selectYear.value = currentYear;
+        }
+
+        // อัปเดตเมื่อเลือกผ่าน Dropdown ทันทีไม่ต้องไล่กดคลิกลูกศร
+        selectMonth.addEventListener('change', function() {
+            currentMonth = parseInt(this.value);
+            renderCalendar();
+        });
+
+        selectYear.addEventListener('change', function() {
+            currentYear = parseInt(this.value);
             renderCalendar();
         });
 
         function renderCalendar() {
             calendarGrid.innerHTML = "";
-            calendarTitle.textContent = `${monthsTH[currentMonth]} ${currentYear + 543}`;
             
+            // ลิสต์ชื่อวันสัปดาห์
             const weekdays = ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"];
             weekdays.forEach(day => {
                 const dayEl = document.createElement('div');
@@ -826,18 +881,21 @@
             const firstDay = new Date(currentYear, currentMonth, 1).getDay();
             const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
+            // ช่องว่างก่อนวันแรกของเดือน
             for (let i = 0; i < firstDay; i++) {
                 const emptyEl = document.createElement('div');
                 emptyEl.className = "day empty";
                 calendarGrid.appendChild(emptyEl);
             }
 
+            // ใส่ปุ่มวันที่ทั้งหมดในเดือนนั้นๆ
             for (let day = 1; day <= daysInMonth; day++) {
                 const dayEl = document.createElement('div');
                 dayEl.className = "day";
                 dayEl.textContent = day;
                 
-                dayEl.addEventListener('click', function() {
+                dayEl.addEventListener('click', function(e) {
+                    e.stopPropagation();
                     const formattedMonth = String(currentMonth + 1).padStart(2, '0');
                     const formattedDay = String(day).padStart(2, '0');
                     actualBirthdate.value = `${currentYear}-${formattedMonth}-${formattedDay}`;
@@ -850,10 +908,12 @@
             }
         }
 
+        // ปุ่มลูกศรเดินหน้า-ถอยหลังแบบทีละเดือน (ยังคงใช้ควบคู่กันได้)
         document.getElementById('prevMonth').addEventListener('click', function(e) {
             e.stopPropagation();
             currentMonth--;
             if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+            syncSelectValues();
             renderCalendar();
         });
 
@@ -861,14 +921,20 @@
             e.stopPropagation();
             currentMonth++;
             if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+            syncSelectValues();
             renderCalendar();
         });
 
-        // ฟังก์ชันช่วยปิดหน้าต่างป็อปอัพทั้งหมดเมื่อคลิกที่อื่น
+        // ฟังก์ชันช่วยปิดหน้าต่างป็อปอัพทั้งหมดเมื่อคลิกนอกพื้นที่ฟอร์ม
         function closeAllPopups() {
             document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
             datePicker.classList.remove('open');
         }
+
+        // ป้องกันไม่ให้การคลิกข้างในกล่อง Dropdown ปฏิทินทำหน้าต่างปิดตัวเอง
+        document.querySelector('.calendar-dropdown').addEventListener('click', function(e){
+            e.stopPropagation();
+        });
 
         document.addEventListener('click', closeAllPopups);
 
