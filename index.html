@@ -90,7 +90,7 @@
             font-weight: 500;
         }
 
-        /* --- Standard Inputs & Date (ช่องเลือกปีเกิด) --- */
+        /* --- Standard Inputs --- */
         input[type="text"],
         input[type="number"],
         input[type="email"],
@@ -114,38 +114,129 @@
             box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
         }
 
-        /* เพิ่มความสมูทในการกดเลือกและดีไซน์ให้ Date Picker */
-        input[type="date"] {
+        /* --- Custom Date Picker (แก้ไขช่องปฏิทินให้สมูทและโค้งมน) --- */
+        .date-picker-container {
+            position: relative;
+        }
+
+        .date-input-trigger {
             width: 100%;
             padding: 13px 18px;
             border: 1.5px solid #e2e8f0;
             border-radius: 16px;
             font-size: 14px;
-            color: #1e293b;
+            color: #94a3b8;
             background-color: #f8fafc;
-            outline: none;
             cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
         }
-        input[type="date"]:focus {
+
+        .date-picker-container.has-value .date-input-trigger {
+            color: #1e293b;
+        }
+
+        .date-picker-container.open .date-input-trigger {
             border-color: #38bdf8;
             background-color: #ffffff;
             box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
         }
-        /* ปรับดีไซน์ปุ่มกดปฏิทินในเบราว์เซอร์ให้โค้งมนและเปลี่ยนสีนุ่มนวล */
-        ::-webkit-calendar-picker-indicator {
-            background-color: transparent;
-            padding: 4px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.2s ease;
-        }
-        ::-webkit-calendar-picker-indicator:hover {
-            background-color: #e0f2fe;
-            transform: scale(1.1);
+
+        .calendar-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 16px;
+            width: 300px;
+            z-index: 110;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-12px) scale(0.99);
+            transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
+                        transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
+                        visibility 0.25s;
         }
 
-        /* --- Custom Dropdown (คำนำหน้าและตัวเลือกอื่น ๆ) --- */
+        .date-picker-container.open .calendar-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .calendar-header span {
+            font-weight: 600;
+            color: #0369a1;
+            font-size: 15px;
+        }
+
+        .calendar-btn {
+            background: none;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .calendar-btn:hover {
+            background-color: #f1f5f9;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            text-align: center;
+        }
+
+        .weekday {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            padding: 4px 0;
+        }
+
+        .day {
+            font-size: 13px;
+            color: #334155;
+            padding: 6px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .day:hover {
+            background-color: #e0f2fe;
+            color: #0284c7;
+        }
+
+        .day.selected {
+            background-color: #0284c7;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .day.empty {
+            cursor: default;
+            background: none !important;
+        }
+
+        /* --- Custom Dropdown (คำนำหน้า) --- */
         .custom-select-wrapper {
             position: relative;
             user-select: none;
@@ -173,7 +264,7 @@
             border-bottom: 2px solid #64748b;
             transform: rotate(45deg);
             margin-top: -4px;
-            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s;
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .custom-select-wrapper.open .custom-select-trigger {
@@ -185,7 +276,6 @@
         .custom-select-wrapper.open .custom-select-trigger::after {
             transform: rotate(-135deg);
             margin-top: 2px;
-            border-color: #0284c7;
         }
 
         .custom-options {
@@ -232,7 +322,7 @@
             display: none;
         }
 
-        /* --- Checkbox & Radio (ปรับปรุงการเปลี่ยนสถานะให้สมูทสูงสุด) --- */
+        /* --- Checkbox & Radio --- */
         .radio-group, .checkbox-group {
             display: flex;
             flex-wrap: wrap;
@@ -251,18 +341,14 @@
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             font-size: 14px;
             color: #475569;
-            position: relative;
-            overflow: hidden;
         }
 
-        /* ทรานซิชันสีและขนาดเมื่อสัมผัสและคลิก */
         .radio-item:hover, .checkbox-item:hover {
             background-color: #f1f5f9;
             border-color: #cbd5e1;
             transform: translateY(-1px);
         }
 
-        /* สไตล์ไอคอนดั้งเดิมซ่อนไว้และตกแต่งด้วย Accent Color แบบลื่นไหล */
         .radio-item input, .checkbox-item input {
             width: 18px;
             height: 18px;
@@ -271,61 +357,44 @@
             transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* เมื่อคลิกติ๊กเลือก ให้มีการขยับขยายตัวเล็กน้อยดูมีมิติ */
         .radio-item:has(input:checked), .checkbox-item:has(input:checked) {
             background-color: #e0f2fe;
             border-color: #38bdf8;
             color: #0369a1;
         }
 
-        .radio-item input:checked, .checkbox-item input:checked {
+        /* --- Custom Color Palette Picker (แก้ไขกล่องเลือกสีไม่ให้เหลี่ยมเด้ง) --- */
+        .color-palette-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            background-color: #f8fafc;
+            min-height: 50px;
+        }
+
+        .color-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s;
+        }
+
+        .color-circle:hover {
             transform: scale(1.15);
         }
 
-        /* --- Color Input (ตกแต่งช่องเลือกสีใหม่ให้หรูหรามนโค้งและขยับสมูท) --- */
-        .color-picker-wrapper {
-            position: relative;
-            width: 100%;
-            height: 50px;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1.5px solid #e2e8f0;
-            background-color: #f8fafc;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        .color-circle.selected {
+            border-color: #0284c7;
+            transform: scale(1.1);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
         }
 
-        .color-picker-wrapper:hover {
-            border-color: #cbd5e1;
-            transform: translateY(-1px);
-        }
-
-        .color-picker-wrapper:focus-within {
-            border-color: #38bdf8;
-            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
-        }
-
-        input[type="color"] {
-            -webkit-appearance: none;
-            border: none;
-            width: calc(100% + 20px);
-            height: calc(100% + 20px);
-            position: absolute;
-            left: -10px;
-            top: -10px;
-            cursor: pointer;
-            background: none;
-        }
-
-        ::-webkit-color-swatch-wrapper {
-            padding: 10px;
-        }
-
-        ::-webkit-color-swatch {
-            border: none;
-            border-radius: 10px;
-        }
-
-        /* --- File Input (ปรับการชี้เมาส์ลากไฟล์และเลือกให้มีแอนิเมชันเคลื่อนไหว) --- */
+        /* --- File Upload --- */
         .file-upload-wrapper {
             position: relative;
             display: flex;
@@ -360,11 +429,6 @@
         .file-upload-icon {
             font-size: 24px;
             margin-bottom: 6px;
-            transition: transform 0.25s ease;
-        }
-
-        .file-upload-wrapper:hover .file-upload-icon {
-            transform: translateY(-3px);
         }
 
         .file-upload-text {
@@ -373,24 +437,77 @@
             font-weight: 500;
         }
 
-        /* --- ส่วนอื่น ๆ และปุ่ม --- */
-        .agreement {
-            margin: 30px 0;
-            padding: 16px;
-            background-color: #f0f9ff;
-            border-radius: 16px;
+        /* --- Custom Agreement Checkbox (แก้ไขช่องติ๊กยอมรับตอนท้าย) --- */
+        .smooth-agreement-box {
+            margin: 35px 0;
+            user-select: none;
         }
-        .agreement .checkbox-item {
-            background: transparent;
-            border: none;
-            padding: 0;
+
+        .smooth-checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            padding: 16px 20px;
+            background-color: #f0f9ff;
+            border: 1.5px solid #e0f2fe;
+            border-radius: 18px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .smooth-checkbox-label:hover {
+            background-color: #e0f2fe;
+            border-color: #bae6fd;
+        }
+
+        /* สร้างช่องติ๊กใหม่เองให้มนกลมกลืน */
+        .custom-checkbox-visual {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #0284c7;
+            border-radius: 7px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .custom-checkbox-visual::after {
+            content: '✓';
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 700;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* ซ่อนกล่องจริงเบื้องหลัง */
+        .smooth-checkbox-label input {
+            display: none;
+        }
+
+        /* แอนิเมชันเปิดสวิตช์เมื่อกดเช็กยอมรับ */
+        .smooth-checkbox-label input:checked + .custom-checkbox-visual {
+            background-color: #0284c7;
+            border-color: #0284c7;
+            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.2);
+        }
+
+        .smooth-checkbox-label input:checked + .custom-checkbox-visual::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .agreement-text {
+            font-size: 14px;
             color: #0369a1;
             font-weight: 500;
         }
-        .agreement .checkbox-item:hover {
-            transform: none;
-        }
 
+        /* --- Buttons --- */
         .btn-group {
             display: flex;
             gap: 16px;
@@ -432,10 +549,7 @@
             transform: translateY(-1px);
         }
 
-        /* --- Responsive --- */
         @media (max-width: 768px) {
-            body { padding: 20px 10px; }
-            .container { padding: 30px 20px; border-radius: 20px; }
             .form-grid { grid-template-columns: 1fr; gap: 16px; }
             .full-width { grid-column: span 1; }
             .btn-group { flex-direction: column-reverse; gap: 12px; }
@@ -457,7 +571,6 @@
                 <legend>1. ข้อมูลส่วนตัว</legend>
                 <div class="form-grid">
                     
-                    <!-- Dropdown คำนำหน้าแบบสไลด์ปรับปรุงใหม่ -->
                     <div class="form-group">
                         <label>คำนำหน้า</label>
                         <div class="custom-select-wrapper">
@@ -491,11 +604,26 @@
                         <input type="text" id="student-id" name="student_id" pattern="[0-9]{5}" placeholder="รหัส 5 หลัก เช่น 12345" required>
                     </div>
                     
-                    <!-- ช่องวันเกิดปรับสมูท -->
+                    <!-- เปลี่ยนช่องวันเกิดเป็น Custom Date Picker เพื่อแอนิเมชันปฏิทินที่สมูท -->
                     <div class="form-group">
-                        <label for="birthdate">วันเดือนปีเกิด</label>
-                        <input type="date" id="birthdate" name="birthdate" required>
+                        <label>วันเดือนปีเกิด</label>
+                        <div class="date-picker-container" id="birthdayPicker">
+                            <div class="date-input-trigger" id="dateTrigger">เลือกวันเดือนปีเกิด 📅</div>
+                            <input type="hidden" name="birthdate" id="actualBirthdate" required>
+                            
+                            <div class="calendar-dropdown">
+                                <div class="calendar-header">
+                                    <button type="button" class="calendar-btn" id="prevMonth">◀</button>
+                                    <span id="calendarTitle">กรกฎาคม 2569</span>
+                                    <button type="button" class="calendar-btn" id="nextMonth">▶</button>
+                                </div>
+                                <div class="calendar-grid" id="calendarGrid">
+                                    <!-- สร้างวันผ่าน JS -->
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                     <div class="form-group">
                         <label for="age">อายุ (ปี)</label>
                         <input type="number" id="age" name="age" min="5" max="30" placeholder="เช่น 15" required>
@@ -535,7 +663,6 @@
                         </div>
                     </div>
 
-                    <!-- Custom Dropdown: ศาสนา -->
                     <div class="form-group">
                         <label>ศาสนา</label>
                         <div class="custom-select-wrapper">
@@ -557,50 +684,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Custom Dropdown: จังหวัด -->
-                    <div class="form-group">
-                        <label>จังหวัดภูมิลำเนา</label>
-                        <div class="custom-select-wrapper">
-                            <select name="province" class="hidden-select" required>
-                                <option value="" disabled selected>-- เลือกจังหวัด --</option>
-                                <option value="กรุงเทพมหานคร">กรุงเทพมหานคร</option>
-                                <option value="เชียงใหม่">เชียงใหม่</option>
-                                <option value="ชลบุรี">ชลบุรี</option>
-                                <option value="นครราชสีมา">นครราชสีมา</option>
-                                <option value="ภูเก็ต">ภูเก็ต</option>
-                            </select>
-                            <div class="custom-select-trigger">-- เลือกจังหวัด --</div>
-                            <div class="custom-options">
-                                <div class="custom-option" data-value="กรุงเทพมหานคร">กรุงเทพมหานคร</div>
-                                <div class="custom-option" data-value="เชียงใหม่">เชียงใหม่</div>
-                                <div class="custom-option" data-value="ชลบุรี">ชลบุรี</div>
-                                <div class="custom-option" data-value="นครราชสีมา">นครราชสีมา</div>
-                                <div class="custom-option" data-value="ภูเก็ต">ภูเก็ต</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Custom Dropdown: กรุ๊ปเลือด -->
-                    <div class="form-group">
-                        <label>กรุ๊ปเลือด</label>
-                        <div class="custom-select-wrapper">
-                            <select name="blood_type" class="hidden-select" required>
-                                <option value="" disabled selected>-- เลือกกรุ๊ปเลือด --</option>
-                                <option value="A">A</option>
-                                <option value="B">B</option>
-                                <option value="O">O</option>
-                                <option value="AB">AB</option>
-                            </select>
-                            <div class="custom-select-trigger">-- เลือกกรุ๊ปเลือด --</div>
-                            <div class="custom-options">
-                                <div class="custom-option" data-value="A">A</div>
-                                <div class="custom-option" data-value="B">B</div>
-                                <div class="custom-option" data-value="O">O</div>
-                                <div class="custom-option" data-value="AB">AB</div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </fieldset>
 
@@ -615,15 +698,20 @@
                             <label class="checkbox-item"><input type="checkbox" name="hobbies[]" value="เล่นกีฬา"> เล่นกีฬา</label>
                             <label class="checkbox-item"><input type="checkbox" name="hobbies[]" value="เล่นเกม"> เล่นเกม</label>
                             <label class="checkbox-item"><input type="checkbox" name="hobbies[]" value="วาดภาพ"> วาดภาพ</label>
-                            <label class="checkbox-item"><input type="checkbox" name="hobbies[]" value="ดนตรี"> ฟังเพลง/ดนตรี</label>
                         </div>
                     </div>
                     
-                    <!-- เลือกสีแบบสมูทและโค้งมน -->
+                    <!-- เปลี่ยนช่องเลือกสีดั้งเดิม เป็นแบบวงกลมพาสเทลคลิกเลือกแบบลื่นไหลและมนโค้ง -->
                     <div class="form-group">
                         <label>สีที่ชอบ</label>
-                        <div class="color-picker-wrapper">
-                            <input type="color" id="fav-color" name="fav_color" value="#0284c7">
+                        <div class="color-palette-container">
+                            <input type="hidden" name="fav_color" id="actualColor" value="#0284c7">
+                            <div class="color-circle selected" style="background-color: #0284c7;" data-color="#0284c7"></div>
+                            <div class="color-circle" style="background-color: #f43f5e;" data-color="#f43f5e"></div>
+                            <div class="color-circle" style="background-color: #10b981;" data-color="#10b981"></div>
+                            <div class="color-circle" style="background-color: #f59e0b;" data-color="#f59e0b"></div>
+                            <div class="color-circle" style="background-color: #8b5cf6;" data-color="#8b5cf6"></div>
+                            <div class="color-circle" style="background-color: #ec4899;" data-color="#ec4899"></div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -633,71 +721,9 @@
                 </div>
             </fieldset>
 
-            <!-- Section 5: ข้อมูลการศึกษา -->
+            <!-- Section 5: การอัปโหลดไฟล์ -->
             <fieldset>
-                <legend>5. ข้อมูลการศึกษา</legend>
-                <div class="form-grid">
-                    <!-- Custom Dropdown: ระดับชั้น -->
-                    <div class="form-group">
-                        <label>ระดับชั้น</label>
-                        <div class="custom-select-wrapper">
-                            <select name="education_level" class="hidden-select" required>
-                                <option value="" disabled selected>-- เลือกระดับชั้น --</option>
-                                <option value="มัธยมศึกษาปีที่ 1">มัธยมศึกษาปีที่ 1</option>
-                                <option value="มัธยมศึกษาปีที่ 2">มัธยมศึกษาปีที่ 2</option>
-                                <option value="มัธยมศึกษาปีที่ 3">มัธยมศึกษาปีที่ 3</option>
-                                <option value="มัธยมศึกษาปีที่ 4">มัธยมศึกษาปีที่ 4</option>
-                                <option value="มัธยมศึกษาปีที่ 5">มัธยมศึกษาปีที่ 5</option>
-                                <option value="มัธยมศึกษาปีที่ 6">มัธยมศึกษาปีที่ 6</option>
-                            </select>
-                            <div class="custom-select-trigger">-- เลือกระดับชั้น --</div>
-                            <div class="custom-options">
-                                <div class="custom-option" data-value="มัธยมศึกษาปีที่ 1">มัธยมศึกษาปีที่ 1</div>
-                                <div class="custom-option" data-value="มัธยมศึกษาปีที่ 2">มัธยมศึกษาปีที่ 2</div>
-                                <div class="custom-option" data-value="มัธยมศึกษาปีที่ 3">มัธยมศึกษาปีที่ 3</div>
-                                <div class="custom-option" data-value="มัธยมศึกษาปีที่ 4">มัธยมศึกษาปีที่ 4</div>
-                                <div class="custom-option" data-value="มัธยมศึกษาปีที่ 5">มัธยมศึกษาปีที่ 5</div>
-                                <div class="custom-option" data-value="มัธยมศึกษาปีที่ 6">มัธยมศึกษาปีที่ 6</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="classroom">ห้องเรียน</label>
-                        <input type="number" id="classroom" name="classroom" min="1" max="15" placeholder="เช่น 1" required>
-                    </div>
-
-                    <!-- Custom Dropdown: แผนการเรียน -->
-                    <div class="form-group">
-                        <label>แผนการเรียน</label>
-                        <div class="custom-select-wrapper">
-                            <select name="study_plan" class="hidden-select" required>
-                                <option value="" disabled selected>-- เลือกแผนการเรียน --</option>
-                                <option value="วิทยาศาสตร์-คณิตศาสตร์">วิทยาศาสตร์-คณิตศาสตร์</option>
-                                <option value="ศิลป์-คำนวณ">ศิลป์-คำนวณ</option>
-                                <option value="ศิลป์-ภาษา">ศิลป์-ภาษา</option>
-                                <option value="ทั่วไป/อื่นๆ">ทั่วไป/อื่นๆ</option>
-                            </select>
-                            <div class="custom-select-trigger">-- เลือกแผนการเรียน --</div>
-                            <div class="custom-options">
-                                <div class="custom-option" data-value="วิทยาศาสตร์-คณิตศาสตร์">วิทยาศาสตร์-คณิตศาสตร์</div>
-                                <div class="custom-option" data-value="ศิลป์-คำนวณ">ศิลป์-คำนวณ</div>
-                                <div class="custom-option" data-value="ศิลป์-ภาษา">ศิลป์-ภาษา</div>
-                                <div class="custom-option" data-value="ทั่วไป/อื่นๆ">ทั่วไป/อื่นๆ</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="gpa">เกรดเฉลี่ยสะสม (GPAX)</label>
-                        <input type="number" id="gpa" name="gpa" step="0.01" min="0.00" max="4.00" placeholder="เช่น 3.50" required>
-                    </div>
-                </div>
-            </fieldset>
-
-            <!-- Section 6: การอัปโหลดไฟล์ (ปรับเปลี่ยนใหม่ให้ลื่นไหลและดูทันสมัย) -->
-            <fieldset>
-                <legend>6. การอัปโหลดไฟล์</legend>
+                <legend>5. การอัปโหลดไฟล์</legend>
                 <div class="form-grid">
                     <div class="form-group">
                         <label>รูปภาพประจำตัว (.jpg, .png)</label>
@@ -718,20 +744,12 @@
                 </div>
             </fieldset>
 
-            <!-- Section 7: ความคิดเห็นเพิ่มเติม -->
-            <fieldset>
-                <legend>7. ความคิดเห็นเพิ่มเติม</legend>
-                <div class="form-group">
-                    <label for="comments">แสดงความคิดเห็น / ข้อมูลเพิ่มเติม</label>
-                    <textarea id="comments" name="comments" rows="4" placeholder="กรอกรายละเอียดเพิ่มเติม..."></textarea>
-                </div>
-            </fieldset>
-
-            <!-- Section 8: ยืนยันข้อมูล -->
-            <div class="agreement">
-                <label class="checkbox-item">
+            <!-- แก้ไขส่วนติ๊กยอมรับตอนท้ายสุดให้มีดีไซน์สมูทโค้งมนกลมกลืน -->
+            <div class="smooth-agreement-box">
+                <label class="smooth-checkbox-label">
                     <input type="checkbox" name="terms_agreement" required>
-                    <span>ฉันยอมรับว่าข้อมูลทั้งหมดถูกต้องตรงตามความเป็นจริง</span>
+                    <div class="custom-checkbox-visual"></div>
+                    <span class="agreement-text">ฉันยอมรับว่าข้อมูลทั้งหมดถูกต้องตรงตามความเป็นจริง</span>
                 </label>
             </div>
 
@@ -742,9 +760,9 @@
         </form>
     </div>
 
-    <!-- --- JS จัดการพฤติกรรมความลื่นไหลของ Dropdown และ File Input --- -->
+    <!-- --- JS จัดการพฤติกรรม Custom UI เพื่อความสมูทสูงสุด --- -->
     <script>
-        // 1. จัดการ Custom Dropdown
+        // 1. จัดการ Custom Dropdown คำนำหน้า
         document.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
             const trigger = wrapper.querySelector('.custom-select-trigger');
             const options = wrapper.querySelectorAll('.custom-option');
@@ -752,48 +770,114 @@
 
             trigger.addEventListener('click', function(e) {
                 e.stopPropagation();
-                document.querySelectorAll('.custom-select-wrapper').forEach(otherWrapper => {
-                    if (otherWrapper !== wrapper) otherWrapper.classList.remove('open');
-                });
+                closeAllPopups();
                 wrapper.classList.toggle('open');
             });
 
             options.forEach(option => {
                 option.addEventListener('click', function() {
-                    const value = this.getAttribute('data-value');
-                    const text = this.textContent;
-
-                    trigger.textContent = text;
+                    trigger.textContent = this.textContent;
                     trigger.style.color = '#1e293b'; 
-                    hiddenSelect.value = value;
+                    hiddenSelect.value = this.getAttribute('data-value');
                     wrapper.classList.remove('open');
                 });
             });
         });
 
-        document.addEventListener('click', function() {
-            document.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
-                wrapper.classList.remove('open');
+        // 2. จัดการช่องเลือกสีพาสเทลแบบ Custom Smooth Palette
+        document.querySelectorAll('.color-circle').forEach(circle => {
+            circle.addEventListener('click', function() {
+                document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                document.getElementById('actualColor').value = this.getAttribute('data-color');
             });
         });
 
-        // 2. จัดการไฟล์อัปโหลด เมื่อเลือกไฟล์แล้วให้แสดงชื่อไฟล์อย่างนุ่มนวล
-        const avatarInput = document.getElementById('avatar-img');
-        const avatarText = document.getElementById('avatar-text');
-        avatarInput.addEventListener('change', function() {
-            if (this.files && this.files[0]) {
-                avatarText.textContent = this.files[0].name;
-                avatarText.style.color = '#0284c7';
-            }
+        // 3. จัดการ Custom Date Picker (ปฏิทินแบบนุ่มนวล)
+        const datePicker = document.getElementById('birthdayPicker');
+        const dateTrigger = document.getElementById('dateTrigger');
+        const actualBirthdate = document.getElementById('actualBirthdate');
+        const calendarGrid = document.getElementById('calendarGrid');
+        const calendarTitle = document.getElementById('calendarTitle');
+        
+        let currentYear = 2026;
+        let currentMonth = 6; // กรกฎาคม (0-indexed)
+        const monthsTH = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
+
+        dateTrigger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            closeAllPopups();
+            datePicker.classList.toggle('open');
+            renderCalendar();
         });
 
-        const docInput = document.getElementById('doc-file');
-        const docText = document.getElementById('doc-text');
-        docInput.addEventListener('change', function() {
-            if (this.files && this.files[0]) {
-                docText.textContent = this.files[0].name;
-                docText.style.color = '#0284c7';
+        function renderCalendar() {
+            calendarGrid.innerHTML = "";
+            calendarTitle.textContent = `${monthsTH[currentMonth]} ${currentYear + 543}`;
+            
+            const weekdays = ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"];
+            weekdays.forEach(day => {
+                const dayEl = document.createElement('div');
+                dayEl.className = "weekday";
+                dayEl.textContent = day;
+                calendarGrid.appendChild(dayEl);
+            });
+
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+            for (let i = 0; i < firstDay; i++) {
+                const emptyEl = document.createElement('div');
+                emptyEl.className = "day empty";
+                calendarGrid.appendChild(emptyEl);
             }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayEl = document.createElement('div');
+                dayEl.className = "day";
+                dayEl.textContent = day;
+                
+                dayEl.addEventListener('click', function() {
+                    const formattedMonth = String(currentMonth + 1).padStart(2, '0');
+                    const formattedDay = String(day).padStart(2, '0');
+                    actualBirthdate.value = `${currentYear}-${formattedMonth}-${formattedDay}`;
+                    dateTrigger.textContent = `${day} ${monthsTH[currentMonth]} ${currentYear + 543}`;
+                    datePicker.classList.add('has-value');
+                    datePicker.classList.remove('open');
+                });
+                
+                calendarGrid.appendChild(dayEl);
+            }
+        }
+
+        document.getElementById('prevMonth').addEventListener('click', function(e) {
+            e.stopPropagation();
+            currentMonth--;
+            if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+            renderCalendar();
+        });
+
+        document.getElementById('nextMonth').addEventListener('click', function(e) {
+            e.stopPropagation();
+            currentMonth++;
+            if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+            renderCalendar();
+        });
+
+        // ฟังก์ชันช่วยปิดหน้าต่างป็อปอัพทั้งหมดเมื่อคลิกที่อื่น
+        function closeAllPopups() {
+            document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
+            datePicker.classList.remove('open');
+        }
+
+        document.addEventListener('click', closeAllPopups);
+
+        // 4. แสดงชื่อไฟล์อัปโหลด
+        document.getElementById('avatar-img').addEventListener('change', function() {
+            if (this.files && this.files[0]) document.getElementById('avatar-text').textContent = this.files[0].name;
+        });
+        document.getElementById('doc-file').addEventListener('change', function() {
+            if (this.files && this.files[0]) document.getElementById('doc-text').textContent = this.files[0].name;
         });
     </script>
 </body>
