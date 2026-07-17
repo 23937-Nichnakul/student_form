@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบบันทึกข้อมูลนักเรียนแห่งอนาคต</title>
+    <title>ระบบบันทึกข้อมูลนักเรียน</title>
     <!-- นำเข้าฟอนต์ Prompt -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         /* --- General Reset & Base Style --- */
@@ -19,119 +19,66 @@
         }
 
         body {
-            /* พื้นหลังลายกริดโฮโลแกรมสไตล์ไซไฟ */
-            background-color: #030a1c;
-            background-image: 
-                linear-gradient(rgba(56, 189, 248, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(56, 189, 248, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            background-position: center top;
+            /* พื้นหลังสีฟ้าพาสเทลละมุน สบายตา */
+            background-color: #f0f7ff;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 80px 20px;
-            position: relative;
-            overflow-x: hidden;
+            padding: 60px 20px;
         }
 
-        /* ตกแต่งแสงนีออนจางๆ ที่พื้นหลัง */
-        body::before {
-            content: "";
-            position: absolute;
-            width: 150%;
-            height: 150%;
-            top: -25%;
-            left: -25%;
-            background: radial-gradient(circle at 50% 50%, rgba(2, 132, 199, 0.15), transparent 60%);
-            z-index: -1;
-            animation: pulse-glow 8s infinite alternate;
-        }
-
-        @keyframes pulse-glow {
-            0% { opacity: 0.5; transform: scale(1); }
-            100% { opacity: 1; transform: scale(1.1); }
-        }
-
-        /* --- Container การ์ดฟอร์มสไตล์โฮโลแกรม --- */
-        .container {
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(20px);
+        /* จัดกรอบฟอร์มหลัก */
+        .wrapper {
             width: 100%;
-            max-width: 900px;
-            border-radius: 30px;
-            /* ขอบนีออนแบบไล่สี */
-            border: 2px solid;
-            border-image: linear-gradient(135deg, #38bdf8, #0369a1) 1;
-            box-shadow: 0 0 50px rgba(56, 189, 248, 0.2);
-            padding: 60px 50px;
-            position: relative;
-            overflow: hidden;
+            max-width: 850px;
         }
 
         /* --- Header Form --- */
         .form-header {
             text-align: center;
-            margin-bottom: 50px;
-            position: relative;
-        }
-
-        .form-header .badge {
-            background-color: rgba(56, 189, 248, 0.1);
-            color: #38bdf8;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 700;
-            display: inline-block;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-            border: 1px solid rgba(56, 189, 248, 0.3);
+            margin-bottom: 30px;
         }
 
         .form-header h2 {
-            color: #ffffff;
-            font-size: 38px;
-            font-weight: 800;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            /* อักษรเรืองแสง */
-            text-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+            color: #0369a1;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
         }
 
         .form-header p {
-            color: #94a3b8;
-            font-size: 16px;
-            font-weight: 400;
+            color: #64748b;
+            font-size: 15px;
         }
 
-        /* --- Form Sections & Typography --- */
+        /* --- แยกแต่ละ Section เป็นการ์ดลอย (แก้ปัญหาความโล่ง) --- */
         fieldset {
             border: none;
-            margin-bottom: 50px;
-            position: relative;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(14, 165, 233, 0.05);
+            margin-bottom: 25px;
+            border: 1px solid #e0f2fe;
         }
 
         legend {
-            font-size: 20px;
-            font-weight: 700;
-            color: #38bdf8;
+            font-size: 18px;
+            font-weight: 600;
+            color: #0284c7;
+            background: #e0f2fe;
+            padding: 6px 18px;
+            border-radius: 30px;
             margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            width: 100%;
-            padding-bottom: 12px;
-            border-bottom: 2px solid rgba(56, 189, 248, 0.2);
-            text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+            display: inline-block;
         }
 
         /* จัด Layout คอลัมน์ */
         .form-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 28px;
+            gap: 24px;
         }
 
         .full-width {
@@ -142,13 +89,12 @@
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            position: relative;
+            gap: 8px;
         }
 
         label {
-            font-size: 15px;
-            color: #e2e8f0;
+            font-size: 14px;
+            color: #334155;
             font-weight: 600;
         }
 
@@ -161,182 +107,188 @@
         select,
         textarea {
             width: 100%;
-            padding: 16px 20px;
-            border: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
             border-radius: 12px;
-            font-size: 15px;
-            color: #ffffff;
-            background-color: rgba(30, 41, 59, 0.5);
+            font-size: 14px;
+            color: #1e293b;
+            background-color: #f8fafc;
             outline: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            /* เงาซ้อนด้านในทำให้ดูมีมิติ */
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
         }
 
-        /* เอฟเฟกต์ Glow นีออนตอนกดพิมพ์ */
+        /* เอฟเฟกต์นุ่มนวลตอนกดพิมพ์ */
         input:focus,
         select:focus,
         textarea:focus {
             border-color: #38bdf8;
-            background-color: rgba(30, 41, 59, 0.8);
-            box-shadow: 
-                inset 0 2px 4px rgba(0, 0, 0, 0.3),
-                0 0 15px rgba(56, 189, 248, 0.5);
-            transform: translateY(-1px);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
         }
 
         /* ปรับแต่งช่องเลือกสี */
         input[type="color"] {
             -webkit-appearance: none;
-            border: 1px solid rgba(56, 189, 248, 0.2);
+            border: 2px solid #e2e8f0;
             border-radius: 12px;
             width: 100%;
-            height: 54px;
+            height: 50px;
             cursor: pointer;
-            background: rgba(30, 41, 59, 0.5);
-            padding: 8px;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+            background: #f8fafc;
+            padding: 6px;
         }
         ::-webkit-color-swatch {
             border: none;
             border-radius: 8px;
         }
 
-        /* ปรับแต่งส่วนอัปโหลดไฟล์ให้ดูเป็นทางการและมีระดับ */
+        /* ช่องอัปโหลดไฟล์แบบนุ่มนวล */
         input[type="file"] {
-            padding: 12px;
-            border: 2px dashed rgba(56, 189, 248, 0.3);
-            background-color: rgba(30, 41, 59, 0.3);
+            padding: 10px;
+            border: 2px dashed #cbd5e1;
+            background-color: #f8fafc;
             border-radius: 12px;
             cursor: pointer;
-            color: #94a3b8;
+            transition: all 0.2s ease;
         }
         input[type="file"]:hover {
-            background-color: rgba(30, 41, 59, 0.6);
+            background-color: #f0f9ff;
             border-color: #38bdf8;
         }
 
-        /* --- Radio & Checkbox Styles --- */
+        /* --- ปรับแต่งตัวเลือก (Radio/Checkbox) ให้เป็นปุ่มการ์ดนุ่มนวล ไม่แข็ง --- */
         .radio-group, .checkbox-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            padding: 8px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            padding: 4px 0;
         }
 
-        .radio-item, .checkbox-item {
+        .custom-option {
+            position: relative;
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 10px 18px;
-            background-color: rgba(30, 41, 59, 0.5);
-            border: 1px solid rgba(56, 189, 248, 0.1);
-            border-radius: 10px;
+            justify-content: center;
+            padding: 12px 16px;
+            background-color: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 15px;
-            color: #e2e8f0;
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
-        }
-
-        .radio-item:hover, .checkbox-item:hover {
-            background-color: rgba(30, 41, 59, 0.8);
-            border-color: rgba(56, 189, 248, 0.4);
-            transform: translateY(-1px);
-        }
-
-        .radio-item input, .checkbox-item input {
-            width: 18px;
-            height: 18px;
-            accent-color: #38bdf8;
-            cursor: pointer;
-        }
-
-        /* --- Agreement Section --- */
-        .agreement {
-            margin: 40px 0;
-            padding: 25px;
-            background: linear-gradient(135deg, rgba(2, 132, 199, 0.1) 0%, rgba(3, 105, 161, 0.1) 100%);
-            border-left: 5px solid #38bdf8;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
-        }
-        .agreement .checkbox-item {
-            background: transparent;
-            border: none;
-            padding: 0;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 14px;
+            color: #475569;
             font-weight: 500;
-            color: #bae6fd;
-            box-shadow: none;
+            text-align: center;
+        }
+
+        /* ซ่อนกล่องติ๊กดีฟอลต์ที่ดูแข็ง */
+        .custom-option input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* เมื่อเอาเมาส์ไปชี้ตัวเลือก */
+        .custom-option:hover {
+            background-color: #f0f9ff;
+            border-color: #bae6fd;
+            color: #0284c7;
+        }
+
+        /* เมื่อกดเลือก (Active State) เปลี่ยนสีเป็นการ์ดฟ้าละมุนทันที */
+        .custom-option:has(input:checked) {
+            background-color: #e0f2fe;
+            border-color: #0284c7;
+            color: #0369a1;
+            font-weight: 600;
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.1);
+        }
+
+        /* --- ข้อตกลงยินยอม --- */
+        .agreement {
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 2px solid #e0f2fe;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .agreement-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #0369a1;
+            font-weight: 500;
+        }
+
+        .agreement-label input {
+            width: 20px;
+            height: 20px;
+            accent-color: #0284c7;
+            cursor: pointer;
         }
 
         /* --- Action Buttons --- */
         .btn-group {
             display: flex;
-            gap: 25px;
-            margin-top: 50px;
+            gap: 16px;
+            margin-top: 30px;
         }
 
         .btn {
             flex: 1;
-            padding: 18px;
+            padding: 16px;
             border: none;
-            border-radius: 15px;
-            font-size: 17px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s ease;
         }
 
         .btn-submit {
-            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            background-color: #0284c7;
             color: #ffffff;
-            border: 1px solid #38bdf8;
-            box-shadow: 0 0 25px rgba(56, 189, 248, 0.3);
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.2);
         }
 
         .btn-submit:hover {
-            background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 0 35px rgba(56, 189, 248, 0.5);
+            background-color: #0369a1;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(2, 132, 199, 0.3);
         }
 
         .btn-reset {
-            background-color: rgba(30, 41, 59, 0.5);
-            color: #94a3b8;
-            border: 1px solid rgba(148, 163, 184, 0.2);
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+            background-color: #ffffff;
+            color: #64748b;
+            border: 2px solid #e2e8f0;
         }
 
         .btn-reset:hover {
-            background-color: rgba(30, 41, 59, 0.8);
-            color: #e2e8f0;
-            border-color: rgba(148, 163, 184, 0.4);
-            transform: translateY(-3px);
+            background-color: #f1f5f9;
+            color: #334155;
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
         }
 
-        /* --- Responsive Styles --- */
+        /* --- Responsive Styles (มือถือ) --- */
         @media (max-width: 768px) {
             body {
-                padding: 40px 10px;
-                background-size: 30px 30px;
-            }
-
-            .container {
-                padding: 45px 25px;
-                border-radius: 20px;
+                padding: 30px 12px;
             }
 
             .form-header h2 {
-                font-size: 28px;
+                font-size: 26px;
             }
 
             .form-grid {
                 grid-template-columns: 1fr;
-                gap: 20px;
+                gap: 16px;
             }
 
             .full-width {
@@ -344,34 +296,35 @@
             }
 
             fieldset {
-                margin-bottom: 35px;
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+
+            .radio-group, .checkbox-group {
+                grid-template-columns: repeat(2, 1fr); /* บนมือถือแบ่งเป็น 2 คอลัมน์ให้กดง่าย */
             }
 
             .btn-group {
                 flex-direction: column-reverse;
-                gap: 15px;
-            }
-            .btn {
-                padding: 16px;
+                gap: 12px;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- หัวข้อฟอร์มแบบมีลูกเล่นไซไฟ -->
+    <div class="wrapper">
+        <!-- หัวข้อฟอร์ม -->
         <div class="form-header">
-            <span class="badge">STUDENT DATA SYSTEM // REV. 2026</span>
-            <h2>บันทึกข้อมูลนักเรียน</h2>
-            <p>กรุณากรอกข้อมูลส่วนบุคคลและข้อมูลการศึกษาลงในระบบโฮโลแกรมให้ครบถ้วน</p>
+            <h2>ระบบลงทะเบียนข้อมูลนักเรียน</h2>
+            <p>กรุณากรอกรายละเอียดให้ครบถ้วนเพื่อทำการบันทึกประวัติ</p>
         </div>
 
         <form action="#" method="POST" enctype="multipart/form-data">
             
             <!-- Section 1: ข้อมูลส่วนตัว -->
             <fieldset>
-                <legend>👤 1. ข้อมูลส่วนตัว [Personal Data]</legend>
+                <legend>👤 1. ข้อมูลส่วนตัว</legend>
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="prefix">คำนำหน้า</label>
@@ -392,7 +345,7 @@
                         <input type="text" id="nickname" name="nickname" placeholder="เช่น บอย" required>
                     </div>
                     <div class="form-group">
-                        <label for="student-id">เลขประจำตัวนักเรียน [ID]</label>
+                        <label for="student-id">เลขประจำตัวนักเรียน</label>
                         <input type="text" id="student-id" name="student_id" pattern="[0-9]{5}" placeholder="รหัส 5 หลัก เช่น 12345" required>
                     </div>
                     <div class="form-group">
@@ -408,11 +361,11 @@
 
             <!-- Section 2: ข้อมูลการติดต่อ -->
             <fieldset>
-                <legend>📞 2. ข้อมูลการติดต่อ [Contact Info]</legend>
+                <legend>📞 2. ข้อมูลการติดต่อ</legend>
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="email">อีเมล</label>
-                        <input type="email" id="email" name="email" placeholder="student@netlink.com" required>
+                        <input type="email" id="email" name="email" placeholder="student@example.com" required>
                     </div>
                     <div class="form-group">
                         <label for="phone">เบอร์โทรศัพท์</label>
@@ -420,26 +373,26 @@
                     </div>
                     <div class="form-group full-width">
                         <label for="address">ที่อยู่ปัจจุบัน</label>
-                        <textarea id="address" name="address" rows="3" placeholder="ระบุเลขที่, ภาคพื้น, เขตปกครอง..." required></textarea>
+                        <textarea id="address" name="address" rows="3" placeholder="ระบุบ้านเลขที่, ถนน, ตำบล, อำเภอ..." required></textarea>
                     </div>
                 </div>
             </fieldset>
 
             <!-- Section 3: ข้อมูลส่วนบุคคล -->
             <fieldset>
-                <legend>🧬 3. ข้อมูลส่วนบุคคล [Bio Data]</legend>
+                <legend>🧬 3. ข้อมูลส่วนบุคคล</legend>
                 <div class="form-grid">
-                    <div class="form-group">
+                    <div class="form-group full-width">
                         <label>เพศ</label>
                         <div class="radio-group">
-                            <label class="radio-item">
+                            <label class="custom-option">
                                 <input type="radio" name="gender" value="ชาย" required> ชาย
                             </label>
-                            <label class="radio-item">
+                            <label class="custom-option">
                                 <input type="radio" name="gender" value="หญิง"> หญิง
                             </label>
-                            <label class="radio-item">
-                                <input type="radio" name="gender" value="อื่นๆ"> อื่นๆ
+                            <label class="custom-option">
+                                <input type="radio" name="gender" value="อื่นๆ"> อื่นๆ / ไม่ระบุ
                             </label>
                         </div>
                     </div>
@@ -465,45 +418,52 @@
                             <option value="ภูเก็ต">ภูเก็ต</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="blood-type">กรุ๊ปเลือด</label>
-                        <select id="blood-type" name="blood_type" required>
-                            <option value="" disabled selected>-- เลือกกรุ๊ปเลือด --</option>
-                            <option value="A">A</option>
-                            <option value="B">B</option>
-                            <option value="O">O</option>
-                            <option value="AB">AB</option>
-                        </select>
+                    <div class="form-group full-width">
+                        <label>กรุ๊ปเลือด</label>
+                        <div class="radio-group">
+                            <label class="custom-option">
+                                <input type="radio" name="blood_type" value="A" required> A
+                            </label>
+                            <label class="custom-option">
+                                <input type="radio" name="blood_type" value="B"> B
+                            </label>
+                            <label class="custom-option">
+                                <input type="radio" name="blood_type" value="O"> O
+                            </label>
+                            <label class="custom-option">
+                                <input type="radio" name="blood_type" value="AB"> AB
+                            </label>
+                        </div>
                     </div>
                 </div>
             </fieldset>
 
             <!-- Section 4: ความสนใจ -->
             <fieldset>
-                <legend>🎨 4. ความสนใจ [Interests]</legend>
+                <legend>🎨 4. ความสนใจ</legend>
                 <div class="form-grid">
                     <div class="form-group full-width">
                         <label>งานอดิเรก (เลือกได้มากกว่า 1 ข้อ)</label>
                         <div class="checkbox-group">
-                            <label class="checkbox-item">
+                            <label class="custom-option">
                                 <input type="checkbox" name="hobbies[]" value="อ่านหนังสือ"> อ่านหนังสือ
                             </label>
-                            <label class="checkbox-item">
+                            <label class="custom-option">
                                 <input type="checkbox" name="hobbies[]" value="เล่นกีฬา"> เล่นกีฬา
                             </label>
-                            <label class="checkbox-item">
+                            <label class="custom-option">
                                 <input type="checkbox" name="hobbies[]" value="เล่นเกม"> เล่นเกม
                             </label>
-                            <label class="checkbox-item">
+                            <label class="custom-option">
                                 <input type="checkbox" name="hobbies[]" value="วาดภาพ"> วาดภาพ
                             </label>
-                            <label class="checkbox-item">
+                            <label class="custom-option">
                                 <input type="checkbox" name="hobbies[]" value="ดนตรี"> ฟังเพลง/ดนตรี
                             </label>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="fav-color">สีที่ชอบ (Color Picker)</label>
+                        <label for="fav-color">สีที่ชอบ</label>
                         <input type="color" id="fav-color" name="fav_color" value="#0284c7">
                     </div>
                     <div class="form-group">
@@ -515,7 +475,7 @@
 
             <!-- Section 5: ข้อมูลการศึกษา -->
             <fieldset>
-                <legend>🎓 5. ข้อมูลการศึกษา [Academic Data]</legend>
+                <legend>🎓 5. ข้อมูลการศึกษา</legend>
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="education-level">ระดับชั้น</label>
@@ -552,7 +512,7 @@
 
             <!-- Section 6: การอัปโหลดไฟล์ -->
             <fieldset>
-                <legend>📁 6. การอัปโหลดไฟล์ [File Uploads]</legend>
+                <legend>📁 6. การอัปโหลดไฟล์</legend>
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="avatar-img">รูปภาพประจำตัว (.jpg, .png)</label>
@@ -567,7 +527,7 @@
 
             <!-- Section 7: ความคิดเห็นเพิ่มเติม -->
             <fieldset>
-                <legend>💬 7. ความคิดเห็นเพิ่มเติม [Comments]</legend>
+                <legend>💬 7. ความคิดเห็นเพิ่มเติม</legend>
                 <div class="form-group">
                     <label for="comments">แสดงความคิดเห็น / ข้อมูลเพิ่มเติม</label>
                     <textarea id="comments" name="comments" rows="4" placeholder="กรอกข้อความที่ต้องการแจ้งรายละเอียดเพิ่มเติม..."></textarea>
@@ -576,16 +536,16 @@
 
             <!-- Section 8: ยืนยันข้อมูล -->
             <div class="agreement">
-                <label class="checkbox-item">
+                <label class="agreement-label">
                     <input type="checkbox" name="terms_agreement" required>
-                    <span>ฉันยอมรับว่าข้อมูลทั้งหมดถูกต้องตรงตามความเป็นจริงและยอมรับเงื่อนไขการใช้งานระบบโฮโลแกรม</span>
+                    <span>ฉันยอมรับว่าข้อมูลทั้งหมดถูกต้องตรงตามความเป็นจริงและยอมรับเงื่อนไขการใช้งาน</span>
                 </label>
             </div>
 
             <!-- ปุ่มดำเนินการ -->
             <div class="btn-group">
-                <button type="reset" class="btn btn-reset">ล้างข้อมูล [RESET]</button>
-                <button type="submit" class="btn btn-submit">ส่งข้อมูลนักเรียน [SUBMIT]</button>
+                <button type="reset" class="btn btn-reset">ล้างข้อมูล</button>
+                <button type="submit" class="btn btn-submit">ส่งข้อมูลนักเรียน</button>
             </div>
 
         </form>
